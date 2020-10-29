@@ -10,16 +10,21 @@ public class BankAccount {
 		password = p;
 	}
 
-	public double getbalance() {
+	public double getBalance() {
 		return balance;
 	}
 
-	public int getaccountID() {
+	public int getAccountID() {
 		return accountID;
 	}
 
-	public void setpassword(String x) {
-		password = x;
+	public void setpassword(String newPass) {
+		if (password != newPass) {
+			password = newPass;
+		}
+		else {
+			System.out.println("You have entered the same password.");
+		}
 	}
 
 	public boolean deposit(double amount) {
@@ -27,7 +32,7 @@ public class BankAccount {
 			return false;
 		}
 		else {
-			balance += amount;
+			this.balance += amount;
 			return true;
 		}
 	}
@@ -37,7 +42,7 @@ public class BankAccount {
 			return false;
 		}
 		else {
-			balance -= amount;
+			this.balance -= amount;
 			return true;
 		}
 	}
@@ -48,6 +53,29 @@ public class BankAccount {
 		x += "\t";
 		x += String.valueOf(balance);
 		return x;
+	}
+
+	private boolean authenticate(String password) {
+		return (password.equals(this.password));
+	}
+
+	public boolean transferTo(BankAccount other, double amount, String password) {
+		if (this.authenticate(password)) {
+			if (other.withdraw(amount)) {
+				if (this.deposit(amount)) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
 	}
 
 }
